@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Library Management Application
+  description: Demo application for managing a library
+  version: 2.0.0
+
+paths:
+  /authors:
+    get:
+      tags:
+        - Authors
+      summary: Return a list of authors
+      responses:
+        '200':
+          description: The list of authors as array of objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/authorSchema'
+    post:
+      tags:
+        - Authors
+      summary: Create an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorBodySchema'
+      responses:
+        '201':
+          description: The author object created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorSchema'
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+
+  /authors/{authorId}:
+    parameters:
+      - $ref: '#/components/parameters/authorId'
+    get:
+      tags:
+        - Authors
+      summary: Return an author by id
+      responses:
+        '200':
+          description: An object of the author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorSchema'
+        '404':
+          description: If the authorId doesn't exists, a Not Found HTTP status will be returned instead
+    put:
+      tags:
+        - Authors
+      summary: Update an author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorBodySchema'
+      responses:
+        '204':
+          description: If the author has been successfully updated, a No Content HTTP status will be returned
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+        '404':
+          description: If the authorId doesn't exists, a Not Found HTTP status will be returned instead
+    delete:
+      tags:
+        - Authors
+      summary: Delete an author
+      responses:
+        '204':
+          description: If the author has been successfully removed, a No Content HTTP status will be returned
+        '404':
+          description: If the authorId doesn't exists, a Not Found HTTP status will be returned instead
+
+components:
+  parameters:
+    authorId:
+      name: authorId
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    authorSchema:
+      type: object
+      properties:
+        authorId:
+          type: integer
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        creationDate:
+          type: string
+          format: datetime
+        updatedDate:
+          type: string
+          format: datetime
+      example:
+        authorId: 1
+        firstName: John
+        lastName: Deere
+        creationDate: '2023-01-01 00:00:00'
+        updatedDate: '2023-01-01 00:00:00'
+
+    authorBodySchema:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+      example:
+        firstName: John
+        lastName: Deere
+
+tags:
+  - name: Authors
