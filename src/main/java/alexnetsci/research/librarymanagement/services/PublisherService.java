@@ -27,8 +27,8 @@ public class PublisherService {
         return publisherRepository.save(publisherBody);
     }
 
-    public Publisher getPublisher(Long publisherId) {
-        return publisherRepository.findById(publisherId).orElseThrow(
+    public Publisher getPublisher(Long id) {
+        return publisherRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "PUBLISHER_NOT_FOUND"
@@ -36,8 +36,8 @@ public class PublisherService {
         );
     }
 
-    public Publisher updatePublisher(Long publisherId, Publisher publisherBody) {
-        Publisher currentPublisher = publisherRepository.findById(publisherId).orElseThrow(
+    public Publisher updatePublisher(Long id, Publisher publisherBody) {
+        Publisher currentPublisher = publisherRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "PUBLISHER_NOT_FOUND"
@@ -48,14 +48,14 @@ public class PublisherService {
         return publisherRepository.save(currentPublisher);
     }
 
-    public void deletePublisher(Long publisherId) {
-        Publisher publisher = publisherRepository.findById(publisherId).orElseThrow(
+    public void deletePublisher(Long id) {
+        publisherRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "PUBLISHER_NOT_FOUND"
                 )
         );
 
-        publisherRepository.deleteById(publisherId);
+        publisherRepository.deleteById(id);
     }
 }
