@@ -14,7 +14,7 @@ public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long publisherId;
+    private Long id;
 
     @NotNull
     @Size(max = 50)
@@ -29,8 +29,8 @@ public class Publisher {
     public Publisher() {
     }
 
-    public Publisher(Long publisherId, String name, LocalDateTime creationDate, LocalDateTime updatedDate) {
-        this.publisherId = publisherId;
+    public Publisher(Long id, String name, LocalDateTime creationDate, LocalDateTime updatedDate) {
+        this.id = id;
         this.name = name;
         this.creationDate = creationDate;
         this.updatedDate = updatedDate;
@@ -42,12 +42,12 @@ public class Publisher {
         this.updatedDate = updatedDate;
     }
 
-    public Long getPublisherId() {
-        return publisherId;
+    public Long getId() {
+        return id;
     }
 
-    public void PublisherId(Long publisherId) {
-        this.publisherId = publisherId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -77,7 +77,7 @@ public class Publisher {
     @Override
     public String toString() {
         return "Publisher{" +
-                "publisherId=" + publisherId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", creationDate=" + creationDate +
                 ", updatedDate=" + updatedDate +

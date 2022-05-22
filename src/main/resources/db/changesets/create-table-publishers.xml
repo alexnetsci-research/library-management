@@ -11,7 +11,7 @@
 
     <changeSet id="create-table-publishers" author="alexnetsci">
         <createTable tableName="publishers">
-            <column name="publisher_id" type="bigint unsigned" autoIncrement="true">
+            <column name="id" type="bigint unsigned" autoIncrement="true">
                 <constraints  primaryKey="true"  nullable="false"/>
             </column>
 

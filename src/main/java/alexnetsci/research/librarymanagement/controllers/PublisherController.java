@@ -33,20 +33,20 @@ public class PublisherController {
         return new ResponseEntity<>(publisher, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/{publisherId}")
-    public Publisher details(@PathVariable("publisherId") Long publisherId) {
-        return publisherService.getPublisher(publisherId);
+    @GetMapping(path = "/{id}")
+    public Publisher details(@PathVariable("id") Long id) {
+        return publisherService.getPublisher(id);
     }
 
-    @PutMapping(path = "/{publisherId}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public Publisher update(@PathVariable("publisherId") Long publisherId, @Valid @RequestBody Publisher publisherBody) {
-        return publisherService.updatePublisher(publisherId, publisherBody);
+    public Publisher update(@PathVariable("id") Long id, @Valid @RequestBody Publisher publisherBody) {
+        return publisherService.updatePublisher(id, publisherBody);
     }
 
-    @DeleteMapping(path = "/{publisherId}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("publisherId") Long publisherId) {
-        publisherService.deletePublisher(publisherId);
+    public void delete(@PathVariable("id") Long id) {
+        publisherService.deletePublisher(id);
     }
 }
