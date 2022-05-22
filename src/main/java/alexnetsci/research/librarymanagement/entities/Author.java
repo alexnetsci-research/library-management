@@ -48,11 +48,11 @@ public class Author {
         this.updatedDate = updatedDate;
     }
 
-    public Long getAuthorId() {
+    public Long getId() {
         return id;
     }
 
-    public void setAuthorId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
