@@ -9,8 +9,19 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
 
-    <include file="db/changesets/create-table-authors.xml"/>
-    <include file="db/changesets/create-table-publishers.xml"/>
-    <include file="db/changesets/create-table-books.xml"/>
+    <changeSet id="create-table-books" author="alexnetsci">
+        <createTable tableName="books">
+            <column name="id" type="bigint unsigned" autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="creation_date" type="datetime" defaultValueDate="CURRENT_TIMESTAMP()"/>
+            <column name="updated_date" type="datetime" defaultValueDate="CURRENT_TIMESTAMP()"/>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

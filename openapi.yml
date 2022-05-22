@@ -159,6 +159,83 @@ paths:
         '404':
           description: If the publisherId doesn't exists, a Not Found HTTP status will be returned instead
 
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Return a list of books
+      responses:
+        '200':
+          description: The list of books as array of objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/bookResponse'
+    post:
+      tags:
+        - Books
+      summary: Create a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bookRequestBody'
+      responses:
+        '201':
+          description: The book object created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bookResponse'
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+
+  /books/{bookId}:
+    parameters:
+      - $ref: '#/components/parameters/bookId'
+    get:
+      tags:
+        - Books
+      summary: Return a book by id
+      responses:
+        '200':
+          description: An object of the book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bookResponse'
+        '404':
+          description: If the bookId doesn't exists, a Not Found HTTP status will be returned instead
+    put:
+      tags:
+        - Books
+      summary: Update a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bookRequestBody'
+      responses:
+        '204':
+          description: If the book has been successfully updated, a No Content HTTP status will be returned
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+        '404':
+          description: If the bookId doesn't exists, a Not Found HTTP status will be returned instead
+    delete:
+      tags:
+        - Books
+      summary: Delete a book
+      responses:
+        '204':
+          description: If the book has been successfully removed, a No Content HTTP status will be returned
+        '404':
+          description: If the bookId doesn't exists, a Not Found HTTP status will be returned instead
+
 components:
   parameters:
     authorId:
@@ -170,6 +247,13 @@ components:
 
     publisherId:
       name: publisherId
+      in: path
+      required: true
+      schema:
+        type: integer
+
+    bookId:
+      name: bookId
       in: path
       required: true
       schema:
@@ -219,6 +303,26 @@ components:
         creationDate: '2023-01-01 00:00:00'
         updatedDate: '2023-01-01 00:00:00'
 
+    bookResponse:
+      type: object
+      properties:
+        bookId:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+        creationDate:
+          type: string
+          format: datetime
+        updatedDate:
+          type: string
+          format: datetime
+      example:
+        bookId: 1
+        title: 'The Present'
+        creationDate: '2023-01-01 00:00:00'
+        updatedDate: '2023-01-01 00:00:00'
+
     authorRequestBody:
       type: object
       properties:
@@ -238,6 +342,15 @@ components:
       example:
         name: 'Manhattan Book Group'
 
+    bookRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+      example:
+        title: 'The Present'
+
 tags:
   - name: Authors
   - name: Publishers
+  - name: Books
