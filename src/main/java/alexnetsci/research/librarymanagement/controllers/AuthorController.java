@@ -33,20 +33,20 @@ public class AuthorController {
         return new ResponseEntity<>(author, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/{authorId}")
-    public Author details(@PathVariable("authorId") Long authorId) {
-        return authorService.getAuthor(authorId);
+    @GetMapping(path = "/{id}")
+    public Author details(@PathVariable("id") Long id) {
+        return authorService.getAuthor(id);
     }
 
-    @PutMapping(path = "/{authorId}")
+    @PutMapping(path = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public Author update(@PathVariable("authorId") Long authorId, @Valid @RequestBody Author authorBody) {
-        return authorService.updateAuthor(authorId, authorBody);
+    public Author update(@PathVariable("id") Long id, @Valid @RequestBody Author authorBody) {
+        return authorService.updateAuthor(id, authorBody);
     }
 
-    @DeleteMapping(path = "/{authorId}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("authorId") Long authorId) {
-        authorService.deleteAuthor(authorId);
+    public void delete(@PathVariable("id") Long id) {
+        authorService.deleteAuthor(id);
     }
 }
