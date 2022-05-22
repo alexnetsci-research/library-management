@@ -18,7 +18,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/authorSchema'
+                  $ref: '#/components/schemas/authorResponse'
     post:
       tags:
         - Authors
@@ -28,14 +28,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authorBodySchema'
+              $ref: '#/components/schemas/authorRequestBody'
       responses:
         '201':
           description: The author object created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authorSchema'
+                $ref: '#/components/schemas/authorResponse'
         '400':
           description: If validation fails, a Bad Request HTTP status will be returned instead
 
@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authorSchema'
+                $ref: '#/components/schemas/authorResponse'
         '404':
           description: If the authorId doesn't exists, a Not Found HTTP status will be returned instead
     put:
@@ -64,7 +64,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authorBodySchema'
+              $ref: '#/components/schemas/authorRequestBody'
       responses:
         '204':
           description: If the author has been successfully updated, a No Content HTTP status will be returned
@@ -82,6 +82,83 @@ paths:
         '404':
           description: If the authorId doesn't exists, a Not Found HTTP status will be returned instead
 
+  /publishers:
+    get:
+      tags:
+        - Publishers
+      summary: Return a list of publishers
+      responses:
+        '200':
+          description: The list of publishers as array of objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/publisherResponse'
+    post:
+      tags:
+        - Publishers
+      summary: Create a publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publisherRequestBody'
+      responses:
+        '201':
+          description: The publisher object created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publisherResponse'
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+
+  /publishers/{publisherId}:
+    parameters:
+      - $ref: '#/components/parameters/publisherId'
+    get:
+      tags:
+        - Publishers
+      summary: Return a publisher by id
+      responses:
+        '200':
+          description: An object of the publisher
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publisherResponse'
+        '404':
+          description: If the publisherId doesn't exists, a Not Found HTTP status will be returned instead
+    put:
+      tags:
+        - Publishers
+      summary: Update a publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/publisherRequestBody'
+      responses:
+        '204':
+          description: If the publisher has been successfully updated, a No Content HTTP status will be returned
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+        '404':
+          description: If the publisherId doesn't exists, a Not Found HTTP status will be returned instead
+    delete:
+      tags:
+        - Publishers
+      summary: Delete a publisher
+      responses:
+        '204':
+          description: If the publisher has been successfully removed, a No Content HTTP status will be returned
+        '404':
+          description: If the publisherId doesn't exists, a Not Found HTTP status will be returned instead
+
 components:
   parameters:
     authorId:
@@ -91,8 +168,15 @@ components:
       schema:
         type: integer
 
+    publisherId:
+      name: publisherId
+      in: path
+      required: true
+      schema:
+        type: integer
+
   schemas:
-    authorSchema:
+    authorResponse:
       type: object
       properties:
         authorId:
@@ -115,7 +199,27 @@ components:
         creationDate: '2023-01-01 00:00:00'
         updatedDate: '2023-01-01 00:00:00'
 
-    authorBodySchema:
+    publisherResponse:
+      type: object
+      properties:
+        publisherId:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        creationDate:
+          type: string
+          format: datetime
+        updatedDate:
+          type: string
+          format: datetime
+      example:
+        publisherId: 1
+        name: 'Manhattan Book Group'
+        creationDate: '2023-01-01 00:00:00'
+        updatedDate: '2023-01-01 00:00:00'
+
+    authorRequestBody:
       type: object
       properties:
         firstName:
@@ -126,5 +230,14 @@ components:
         firstName: John
         lastName: Deere
 
+    publisherRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: 'Manhattan Book Group'
+
 tags:
   - name: Authors
+  - name: Publishers
