@@ -9,15 +9,14 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
 
-    <include file="db/changesets/create-table-authors.xml"/>
-    <include file="db/changesets/create-table-publishers.xml"/>
-    <include file="db/changesets/create-table-books.xml"/>
-<!--    <include file="db/changesets/create-table-books-authors.xml"/>-->
-
-    <include file="db/changesets/add-column-publisher-id-to-books.xml"/>
-
-    <include file="db/changesets/add-foreign-key-constraint-books-publisher.xml"/>
-<!--    <include file="db/changesets/add-foreign-key-constraint-fk-book.xml"/>-->
-<!--    <include file="db/changesets/add-foreign-key-constraint-fk-authors.xml"/>-->
+    <changeSet id="add-column-publisher-id-to-books" author="alexnetsci">
+        <addColumn tableName="books">
+            <column name="publisher_id"
+                    type="bigint unsigned"
+            >
+                <constraints nullable="false" foreignKeyName="books_publisher"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

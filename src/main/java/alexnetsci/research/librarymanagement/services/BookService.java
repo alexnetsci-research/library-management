@@ -1,30 +1,48 @@
 package alexnetsci.research.librarymanagement.services;
 
+import alexnetsci.research.librarymanagement.entities.Author;
 import alexnetsci.research.librarymanagement.entities.Book;
+import alexnetsci.research.librarymanagement.entities.Publisher;
+import alexnetsci.research.librarymanagement.pojos.BookRequest;
+import alexnetsci.research.librarymanagement.repositories.AuthorRepository;
 import alexnetsci.research.librarymanagement.repositories.BookRepository;
+import alexnetsci.research.librarymanagement.repositories.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import javax.persistence.EntityNotFoundException;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
-    private final BookRepository bookRepository;
+    @Autowired private BookRepository bookRepository;
+    @Autowired private PublisherRepository publisherRepository;
+    @Autowired private AuthorRepository authorRepository;
 
-    @Autowired
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
-
-    public List<Book> getBooks() {
+    public Collection<Book> getBooks() {
         return bookRepository.findAll();
     }
 
-    public Book createBook(Book bookBody) {
-        return bookRepository.save(bookBody);
+    public Book createBook(BookRequest bookRequest) {
+        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(EntityNotFoundException::new);
+
+        Book book = new Book();
+        book.setTitle(bookRequest.title);
+        book.setPublisher(publisher);
+        book.setAuthors(bookRequest.authors.stream().map(author -> {
+            Author authorList = author;
+            if (authorList.getId() > 0) {
+                authorList = authorRepository.findById(authorList.getId()).orElseThrow(EntityNotFoundException::new);
+            }
+            book.getAuthors().add(authorList);
+            return authorList;
+        }).collect(Collectors.toSet()));
+
+        return bookRepository.save(book);
     }
 
     public Book getBook(Long id) {
@@ -36,14 +54,25 @@ public class BookService {
         );
     }
 
-    public Book updateBook(Long id, Book bookBody) {
+    public Book updateBook(Long id, BookRequest bookRequest) {
+        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(EntityNotFoundException::new);
+
         Book currentBook = bookRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "BOOK_NOT_FOUND"
                 )
         );
-        currentBook.setTitle(bookBody.getTitle());
+        currentBook.setTitle(bookRequest.title);
+        currentBook.setPublisher(publisher);
+        currentBook.setAuthors(bookRequest.authors.stream().map(author -> {
+            Author authorList = author;
+            if (authorList.getId() > 0) {
+                authorList = authorRepository.findById(authorList.getId()).orElseThrow(EntityNotFoundException::new);
+            }
+            currentBook.getAuthors().add(authorList);
+            return authorList;
+        }).collect(Collectors.toSet()));
 
         return bookRepository.save(currentBook);
     }
