@@ -9,7 +9,7 @@ paths:
     get:
       tags:
         - Authors
-      summary: Return a list of authors
+      summary: Retrieve a list of authors
       responses:
         '200':
           description: The list of authors as array of objects
@@ -45,7 +45,7 @@ paths:
     get:
       tags:
         - Authors
-      summary: Return an author by id
+      summary: Retrieve an author by id
       responses:
         '200':
           description: An object of the author
@@ -86,7 +86,7 @@ paths:
     get:
       tags:
         - Publishers
-      summary: Return a list of publishers
+      summary: Retrieve a list of publishers
       responses:
         '200':
           description: The list of publishers as array of objects
@@ -122,7 +122,7 @@ paths:
     get:
       tags:
         - Publishers
-      summary: Return a publisher by id
+      summary: Retrieve a publisher by id
       responses:
         '200':
           description: An object of the publisher
@@ -163,7 +163,7 @@ paths:
     get:
       tags:
         - Books
-      summary: Return a list of books
+      summary: Retrieve a list of books
       responses:
         '200':
           description: The list of books as array of objects
@@ -199,7 +199,7 @@ paths:
     get:
       tags:
         - Books
-      summary: Return a book by id
+      summary: Retrieve a book by id
       responses:
         '200':
           description: An object of the book
@@ -236,6 +236,83 @@ paths:
         '404':
           description: If the bookId doesn't exists, a Not Found HTTP status will be returned instead
 
+  /genres:
+    get:
+      tags:
+        - Genres
+      summary: Retrieve a list of genres
+      responses:
+        '200':
+          description: The list of genres as array of objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/genreResponse'
+    post:
+      tags:
+        - Genres
+      summary: Create a genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/genreRequestBody'
+      responses:
+        '201':
+          description: The genre object created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genreResponse'
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+
+  /genres/{genreId}:
+    parameters:
+      - $ref: '#/components/parameters/genreId'
+    get:
+      tags:
+        - Genres
+      summary: Retrieve a genre by id
+      responses:
+        '200':
+          description: An object of the genre
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genreResponse'
+        '404':
+          description: If the genreId doesn't exists, a Not Found HTTP status will be returned instead
+    put:
+      tags:
+        - Genres
+      summary: Update a genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/genreRequestBody'
+      responses:
+        '204':
+          description: If the genre has been successfully updated, a No Content HTTP status will be returned
+        '400':
+          description: If validation fails, a Bad Request HTTP status will be returned instead
+        '404':
+          description: If the genreId doesn't exists, a Not Found HTTP status will be returned instead
+    delete:
+      tags:
+        - Genres
+      summary: Delete a genre
+      responses:
+        '204':
+          description: If the genre has been successfully removed, a No Content HTTP status will be returned
+        '404':
+          description: If the genreId doesn't exists, a Not Found HTTP status will be returned instead
+
 components:
   parameters:
     authorId:
@@ -254,6 +331,13 @@ components:
 
     bookId:
       name: bookId
+      in: path
+      required: true
+      schema:
+        type: integer
+
+    genreId:
+      name: genreId
       in: path
       required: true
       schema:
@@ -344,6 +428,26 @@ components:
             creationDate: '2023-01-01 00:00:00'
             updatedDate: '2023-01-01 00:00:00'
 
+    genreResponse:
+      type: object
+      properties:
+        genreId:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        creationDate:
+          type: string
+          format: datetime
+        updatedDate:
+          type: string
+          format: datetime
+      example:
+        genreId: 1
+        name: 'Genre Name'
+        creationDate: '2023-01-01 00:00:00'
+        updatedDate: '2023-01-01 00:00:00'
+
     authorRequestBody:
       type: object
       properties:
@@ -375,14 +479,22 @@ components:
           minItems: 1
           items:
             type: integer
-
       example:
         title: 'Book Title'
         publisher: 1
         authors:
           - 1
 
+    genreRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: 'Genre Name'
+
 tags:
   - name: Authors
   - name: Publishers
   - name: Books
+  - name: Genres

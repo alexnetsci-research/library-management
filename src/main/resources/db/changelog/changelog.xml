@@ -12,12 +12,15 @@
     <include file="db/changesets/create-table-authors.xml"/>
     <include file="db/changesets/create-table-publishers.xml"/>
     <include file="db/changesets/create-table-books.xml"/>
-<!--    <include file="db/changesets/create-table-books-authors.xml"/>-->
+    <include file="db/changesets/create-table-books-authors.xml"/>
+    <include file="db/changesets/create-table-genres.xml"/>
 
     <include file="db/changesets/add-column-publisher-id-to-books.xml"/>
+    <include file="db/changesets/add-column-genre-id-to-books.xml"/>
 
     <include file="db/changesets/add-foreign-key-constraint-books-publisher.xml"/>
-<!--    <include file="db/changesets/add-foreign-key-constraint-fk-book.xml"/>-->
-<!--    <include file="db/changesets/add-foreign-key-constraint-fk-authors.xml"/>-->
+    <include file="db/changesets/add-foreign-key-constraint-fk-book.xml"/>
+    <include file="db/changesets/add-foreign-key-constraint-fk-authors.xml"/>
+    <include file="db/changesets/add-foreign-key-constraint-books-genre.xml"/>
 
 </databaseChangeLog>
