@@ -55,20 +55,32 @@ public class BookService {
     }
 
     public Book updateBook(Long id, BookRequest bookRequest) {
-        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(EntityNotFoundException::new);
-
         Book currentBook = bookRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "BOOK_NOT_FOUND"
                 )
         );
+
+        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "PUBLISHER_NOT_FOUND"
+                )
+        );
+
         currentBook.setTitle(bookRequest.title);
         currentBook.setPublisher(publisher);
+
         currentBook.setAuthors(bookRequest.authors.stream().map(author -> {
             Author authorList = author;
             if (authorList.getId() > 0) {
-                authorList = authorRepository.findById(authorList.getId()).orElseThrow(EntityNotFoundException::new);
+                authorList = authorRepository.findById(authorList.getId()).orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "AUTHOR_NOT_FOUND"
+                        )
+                );
             }
             currentBook.getAuthors().add(authorList);
             return authorList;

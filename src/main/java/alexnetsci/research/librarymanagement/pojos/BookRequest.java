@@ -10,8 +10,6 @@ import java.util.Set;
 
 public class BookRequest {
 
-    public long id;
-
     @NotNull
     @NotEmpty
     @Size(max = 50)
