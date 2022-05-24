@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "authors")
@@ -22,7 +22,7 @@ public class AuthorController {
     }
 
     @GetMapping
-    public List<Author> index() {
+    public Collection<Author> index() {
         return authorService.getAuthors();
     }
 
