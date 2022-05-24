@@ -411,6 +411,10 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/authorResponse'
+        genre:
+          allOf:
+            - readOnly: true
+            - $ref: '#/components/schemas/genreResponse'
       example:
         bookId: 1
         title: 'Book Title'
@@ -427,6 +431,11 @@ components:
             lastName: 'Author Last Name'
             creationDate: '2023-01-01 00:00:00'
             updatedDate: '2023-01-01 00:00:00'
+        genre:
+          id: 1
+          name: 'Genre Name'
+          creationDate: '2023-01-01 00:00:00'
+          updatedDate: '2023-01-01 00:00:00'
 
     genreResponse:
       type: object
@@ -472,18 +481,21 @@ components:
       properties:
         title:
           type: string
-        publisher:
+        publisherId:
           type: integer
         authors:
           type: array
           minItems: 1
           items:
             type: integer
+        genreId:
+          type: integer
       example:
         title: 'Book Title'
-        publisher: 1
+        publisherId: 1
         authors:
           - 1
+        genreId: 1
 
     genreRequestBody:
       type: object

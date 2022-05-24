@@ -2,10 +2,12 @@ package alexnetsci.research.librarymanagement.services;
 
 import alexnetsci.research.librarymanagement.entities.Author;
 import alexnetsci.research.librarymanagement.entities.Book;
+import alexnetsci.research.librarymanagement.entities.Genre;
 import alexnetsci.research.librarymanagement.entities.Publisher;
 import alexnetsci.research.librarymanagement.pojos.BookRequest;
 import alexnetsci.research.librarymanagement.repositories.AuthorRepository;
 import alexnetsci.research.librarymanagement.repositories.BookRepository;
+import alexnetsci.research.librarymanagement.repositories.GenreRepository;
 import alexnetsci.research.librarymanagement.repositories.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class BookService {
     @Autowired private BookRepository bookRepository;
     @Autowired private PublisherRepository publisherRepository;
     @Autowired private AuthorRepository authorRepository;
+    @Autowired private GenreRepository genreRepository;
 
     public Collection<Book> getBooks() {
         return bookRepository.findAll();
@@ -37,8 +40,16 @@ public class BookService {
                 )
         );
 
+        Genre genre = genreRepository.findById(bookRequest.genreId).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "GENRE_NOT_FOUND"
+                )
+        );
+
         book.setTitle(bookRequest.title);
         book.setPublisher(publisher);
+        book.setGenre(genre);
 
         book.setAuthors(bookRequest.authors.stream().map(author -> {
             Author authorList = author;
@@ -81,8 +92,16 @@ public class BookService {
                 )
         );
 
+        Genre genre = genreRepository.findById(bookRequest.genreId).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "GENRE_NOT_FOUND"
+                )
+        );
+
         currentBook.setTitle(bookRequest.title);
         currentBook.setPublisher(publisher);
+        currentBook.setGenre(genre);
 
         currentBook.setAuthors(bookRequest.authors.stream().map(author -> {
             Author authorList = author;
