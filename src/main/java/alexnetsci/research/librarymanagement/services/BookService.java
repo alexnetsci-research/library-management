@@ -28,15 +28,27 @@ public class BookService {
     }
 
     public Book createBook(BookRequest bookRequest) {
-        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(EntityNotFoundException::new);
-
         Book book = new Book();
+
+        Publisher publisher = publisherRepository.findById(bookRequest.publisherId).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "PUBLISHER_NOT_FOUND"
+                )
+        );
+
         book.setTitle(bookRequest.title);
         book.setPublisher(publisher);
+
         book.setAuthors(bookRequest.authors.stream().map(author -> {
             Author authorList = author;
             if (authorList.getId() > 0) {
-                authorList = authorRepository.findById(authorList.getId()).orElseThrow(EntityNotFoundException::new);
+                authorList = authorRepository.findById(authorList.getId()).orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "AUTHOR_NOT_FOUND"
+                        )
+                );
             }
             book.getAuthors().add(authorList);
             return authorList;
