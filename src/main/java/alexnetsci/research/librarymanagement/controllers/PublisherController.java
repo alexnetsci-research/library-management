@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping(path = "publishers")
@@ -22,7 +22,7 @@ public class PublisherController {
     }
 
     @GetMapping
-    public List<Publisher> index() {
+    public Collection<Publisher> index() {
         return publisherService.getPublishers();
     }
 
