@@ -1,7 +1,5 @@
 package alexnetsci.research.librarymanagement.pojos;
 
-import alexnetsci.research.librarymanagement.entities.Author;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,8 +15,8 @@ public class BookRequest {
     @NotNull
     public long publisherId;
 
-    @NotNull
-    public Set<Author> authors;
+    @NotEmpty
+    public Set<Long> authorIds;
 
     @NotNull
     public long genreId;

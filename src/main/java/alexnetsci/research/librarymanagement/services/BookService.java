@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -51,10 +50,10 @@ public class BookService {
         book.setPublisher(publisher);
         book.setGenre(genre);
 
-        book.setAuthors(bookRequest.authors.stream().map(author -> {
-            Author authorList = author;
-            if (authorList.getId() > 0) {
-                authorList = authorRepository.findById(authorList.getId()).orElseThrow(
+        book.setAuthors(bookRequest.authorIds.stream().map(authorId -> {
+            Author authorList = new Author();
+            if (authorId > 0) {
+                authorList = authorRepository.findById(authorId).orElseThrow(
                         () -> new ResponseStatusException(
                                 HttpStatus.NOT_FOUND,
                                 "AUTHOR_NOT_FOUND"
@@ -103,10 +102,10 @@ public class BookService {
         currentBook.setPublisher(publisher);
         currentBook.setGenre(genre);
 
-        currentBook.setAuthors(bookRequest.authors.stream().map(author -> {
-            Author authorList = author;
-            if (authorList.getId() > 0) {
-                authorList = authorRepository.findById(authorList.getId()).orElseThrow(
+        currentBook.setAuthors(bookRequest.authorIds.stream().map(authorId -> {
+            Author authorList = new Author();
+            if (authorId > 0) {
+                authorList = authorRepository.findById(authorId).orElseThrow(
                         () -> new ResponseStatusException(
                                 HttpStatus.NOT_FOUND,
                                 "AUTHOR_NOT_FOUND"
